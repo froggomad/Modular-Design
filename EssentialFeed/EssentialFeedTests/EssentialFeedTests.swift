@@ -10,14 +10,6 @@ import EssentialFeed
 
 class EssentialFeedTests: XCTestCase {
     
-    private class MockHTTPClient: HTTPClient {
-        var requestedURL: URL?
-        
-        func get(from url: URL) {
-            requestedURL = url
-        }
-        
-    }
 
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
@@ -30,8 +22,10 @@ class EssentialFeedTests: XCTestCase {
         let (sut, client) = makeSUT(url: url)
         
         sut.load()
+        sut.load()
         
         XCTAssertEqual(url, client.requestedURL)
+        XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
     // MARK: - Helpers -
@@ -42,4 +36,14 @@ class EssentialFeedTests: XCTestCase {
         return (sut, client)
     }
 
+    private class MockHTTPClient: HTTPClient {
+        var requestedURL: URL?
+        var requestedURLs = [URL]()
+        
+        func get(from url: URL) {
+            requestedURL = url
+            requestedURLs.append(url)
+        }
+        
+    }
 }
