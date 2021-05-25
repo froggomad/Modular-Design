@@ -25,7 +25,7 @@ class EssentialFeedTests: XCTestCase {
         XCTAssertNil(client.requestedURL)
     }
     
-    func test_load_requestDataFromURL() {
+    func test_load_requestsDataFromURL() {
         let url = URL(string: "https://www.google.com")!
         let (sut, client) = makeSUT(url: url)
         
