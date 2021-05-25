@@ -5,7 +5,6 @@ By building the app using modules (frameworks) we can better ensure separation o
 ## Modules
 
 ### EssentialFeed
+<i>The main "Feed"</i>
 
-TODO: User Story
-
-The main "Feed"
+As an online customer, I want the app to automatically load my latest image feed so I can always enjoy the newest images of my friends
