@@ -21,8 +21,8 @@ class EssentialFeedTests: XCTestCase {
         let url = URL(string: "https://www.google.com")!
         let (sut, client) = makeSUT(url: url)
         
-        sut.load()
-        sut.load()
+        sut.load { _ in }
+        sut.load { _ in }
         
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
@@ -57,8 +57,8 @@ class EssentialFeedTests: XCTestCase {
             return messages.map { $0.url }
         }
         
-        func get(from url: URL, completion: @escaping (Error) -> Void) {
-            messages.append((url, completion))            
+        func get(from url: URL, completion: @escaping (Error) -> Void = { _ in }) {
+            messages.append((url, completion))
         }
 
         func complete(with error: Error, index: Int = 0) {
