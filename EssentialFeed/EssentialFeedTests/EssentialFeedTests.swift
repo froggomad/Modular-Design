@@ -35,7 +35,7 @@ class EssentialFeedTests: XCTestCase {
         
         let clientError = NSError(domain: "Test", code: 0)
         // call first completion with clientError
-        client.completions[0](clientError)
+        client.complete(with: clientError)
         
         XCTAssertEqual(capturedErrors, [.connectivity])
     }
@@ -51,6 +51,10 @@ class EssentialFeedTests: XCTestCase {
     private class MockHTTPClient: HTTPClient {
         var requestedURLs = [URL]()
         var completions = [(Error) -> Void]()
+        
+        func complete(with error: Error, index: Int = 0) {
+            completions[index](error)
+        }
         
         func get(from url: URL, completion: @escaping (Error) -> Void) {
             completions.append(completion)
