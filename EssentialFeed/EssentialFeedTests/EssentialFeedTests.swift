@@ -10,7 +10,7 @@ import EssentialFeed
 
 class EssentialFeedTests: XCTestCase {
     
-
+    
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
         
@@ -43,13 +43,22 @@ class EssentialFeedTests: XCTestCase {
     func test_load_deliversHTTPResponseError() {
         let (sut, client) = makeSUT()
         
-        var capturedErrors = [RemoteFeedLoader.Error]()
-        sut.load() { capturedErrors.append($0) }
+        // we're expecting 200 for success
+        let failureCodes = [199, 201, 300, 400, 500]
+            .enumerated()
         
-        // call first completion with clientError
-        client.complete(withStatusCode: 400)
-        
-        XCTAssertEqual(capturedErrors, [.invalidData])
+        failureCodes.forEach { (index, code) in
+            client.complete(withStatusCode: code)
+            
+            var capturedErrors = [RemoteFeedLoader.Error]()
+            sut.load() { capturedErrors.append($0) }
+            
+            client.complete(withStatusCode: code,
+                            at: index)
+            
+            XCTAssertEqual(capturedErrors,
+                           [.invalidData])
+        }
     }
     
     // MARK: - Helpers -
@@ -59,7 +68,7 @@ class EssentialFeedTests: XCTestCase {
         let sut = RemoteFeedLoader(url: url, client: client)
         return (sut, client)
     }
-
+    
     private class MockHTTPClient: HTTPClient {
         private var messages = [(url: URL, completion: (Error?, HTTPURLResponse?) -> Void)]()
         
@@ -70,7 +79,7 @@ class EssentialFeedTests: XCTestCase {
         func get(from url: URL, completion: @escaping(Error?, HTTPURLResponse?) -> Void = { _, _ in }) {
             messages.append((url, completion))
         }
-
+        
         func complete(with error: Error, at index: Int = 0) {
             messages[index].completion(error, nil)
         }
