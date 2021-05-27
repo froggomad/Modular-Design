@@ -14,7 +14,7 @@ class EssentialFeedTests: XCTestCase {
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
         
-        XCTAssertNil(client.requestedURL)
+        XCTAssertEqual(client.requestedURLs.count, 0)
     }
     
     func test_load_requestsDataFromURL() {
@@ -24,17 +24,20 @@ class EssentialFeedTests: XCTestCase {
         sut.load()
         sut.load()
         
-        XCTAssertEqual(url, client.requestedURL)
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
-        client.error = NSError(domain: "Test", code: 0)
         
-        var capturedError: RemoteFeedLoader.Error?
-        sut.load { error in capturedError = error }
-        XCTAssertEqual(capturedError, .connectivity)
+        var capturedErrors = [RemoteFeedLoader.Error]()
+        sut.load() { capturedErrors.append($0) }
+        
+        let clientError = NSError(domain: "Test", code: 0)
+        // call first completion with clientError
+        client.completions[0](clientError)
+        
+        XCTAssertEqual(capturedErrors, [.connectivity])
     }
     
     // MARK: - Helpers -
@@ -46,17 +49,11 @@ class EssentialFeedTests: XCTestCase {
     }
 
     private class MockHTTPClient: HTTPClient {
-        var requestedURL: URL?
         var requestedURLs = [URL]()
-        var error: Error?
+        var completions = [(Error) -> Void]()
         
         func get(from url: URL, completion: @escaping (Error) -> Void) {
-            
-            if let error = error {
-                completion(error)
-            }
-            
-            requestedURL = url
+            completions.append(completion)
             requestedURLs.append(url)
         }
         
