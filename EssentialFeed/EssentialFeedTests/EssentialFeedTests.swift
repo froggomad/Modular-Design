@@ -48,7 +48,6 @@ class EssentialFeedTests: XCTestCase {
             .enumerated()
         
         failureCodes.forEach { (index, code) in
-            client.complete(withStatusCode: code)
             
             var capturedErrors = [RemoteFeedLoader.Error]()
             sut.load() { capturedErrors.append($0) }
@@ -70,28 +69,29 @@ class EssentialFeedTests: XCTestCase {
     }
     
     private class MockHTTPClient: HTTPClient {
-        private var messages = [(url: URL, completion: (Error?, HTTPURLResponse?) -> Void)]()
+        private var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
         
         var requestedURLs: [URL] {
             return messages.map { $0.url }
         }
         
-        func get(from url: URL, completion: @escaping(Error?, HTTPURLResponse?) -> Void = { _, _ in }) {
+        func get(from url: URL, completion: @escaping(HTTPClientResult) -> Void = { _ in }) {
             messages.append((url, completion))
         }
         
         func complete(with error: Error, at index: Int = 0) {
-            messages[index].completion(error, nil)
+            messages[index].completion( .failure(error) )
         }
         
         func complete(withStatusCode code: Int, at index: Int = 0) {
+            print(index)
             let response = HTTPURLResponse(
                 url: requestedURLs[index],
                 statusCode: code,
                 httpVersion: nil,
                 headerFields: nil
-            )
-            messages[index].completion(nil, response)
+            )!
+            messages[index].completion(.success(response))
         }
         
     }
