@@ -74,12 +74,54 @@ class EssentialFeedTests: XCTestCase {
         })
     }
     
+    func test_load_deliverItemsOn200HTTPResponseWithJSONItem() {
+        let (sut, client) = makeSUT()
+        
+        let item1 = makeItem(
+            id: UUID(),
+            description: nil,
+            location: "item1",
+            imageURL: URL(string: "https://www.google.com")!
+        )
+        
+        let item2 = makeItem(
+            id: UUID(),
+            description: "item2",
+            location: nil,
+            imageURL: URL(string: "https://www.google.com")!
+        )
+        
+        let jsonData = makeItemsJSON([item1.json, item2.json])
+        
+        expect(sut, toCompleteWithResult: .success([item1.model, item2.model]), when: {
+            
+            client.complete(withStatusCode: 200, data:  jsonData)
+        })
+    }
+    
     // MARK: - Helpers -
     
     private func makeSUT(url: URL = URL(string: "https://www.google.com")!) -> (sut: RemoteFeedLoader, client: MockHTTPClient) {
         let client = MockHTTPClient()
         let sut = RemoteFeedLoader(url: url, client: client)
         return (sut, client)
+    }
+    
+    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedItem, json: [String: Any]) {
+        let item = FeedItem(id: id, description: description, location: location, imageURL: imageURL)
+        let json: [String: Any] = [
+            "id": id.uuidString,
+            "description": description as Any,
+            "location": location as Any,
+            "image": imageURL.absoluteString
+        ].compactMapValues({ $0 })
+        
+        return (model: item, json: json)
+    }
+    
+    private func makeItemsJSON(_ items: [[String: Any]]) -> Data {
+        let json = ["items": items]
+        return try! JSONSerialization.data(withJSONObject: json)
     }
     
     private func expect(_ sut: RemoteFeedLoader, toCompleteWithResult result: RemoteFeedLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
