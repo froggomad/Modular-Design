@@ -45,9 +45,10 @@ class EssentialFeedTests: XCTestCase {
             .enumerated()
         
         failureCodes.forEach { (index, code) in
+            let json = makeItemsJSON([])
             
             expect(sut, toCompleteWithResult: .failure( .invalidData) ) {
-                client.complete(withStatusCode: code,
+                client.complete(withStatusCode: code, data: json,
                                 at: index)
             }
             
