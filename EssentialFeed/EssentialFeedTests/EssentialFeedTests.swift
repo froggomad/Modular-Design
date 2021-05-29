@@ -102,10 +102,18 @@ class EssentialFeedTests: XCTestCase {
     
     // MARK: - Helpers -
     
-    private func makeSUT(url: URL = URL(string: "https://www.google.com")!) -> (sut: RemoteFeedLoader, client: MockHTTPClient) {
+    private func makeSUT(url: URL = URL(string: "https://www.google.com")!, file: StaticString = #filePath, line: UInt = #line) -> (sut: RemoteFeedLoader, client: MockHTTPClient) {
         let client = MockHTTPClient()
         let sut = RemoteFeedLoader(url: url, client: client)
+        assertNoMemoryLeak(client, file: file, line: line)
+        assertNoMemoryLeak(sut, file: file, line: line)
         return (sut, client)
+    }
+    
+    private func assertNoMemoryLeak(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "Instance should have been deallocated. Potential retain cycle.", file: file, line: line)
+        }
     }
     
     private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedItem, json: [String: Any]) {
