@@ -184,7 +184,7 @@ class EssentialFeedTests: XCTestCase {
         }
         
         func get(from url: URL, completion: @escaping(HTTPClientResult) -> Void = { _ in }) {
-            messages.append((url, completion))
+            messages.append((url, completion))            
         }
         
         func complete(with error: Error, at index: Int = 0) {
