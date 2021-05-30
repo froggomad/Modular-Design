@@ -51,7 +51,6 @@ class URLSessionHTTPClientTests: XCTestCase {
         let url = URL(string: "https://www.google.com")!
         let error = NSError(domain: "any error", code: 1)
         let session  = HTTPSessionSpy()
-        let task = URLSessionDataTaskSpy()
         session.stub(url: url, error: error)
         
         let sut = URLSessionHTTPClient(session: session)
