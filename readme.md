@@ -7,4 +7,8 @@ By building the app using modules (frameworks) we can better ensure separation o
 ### EssentialFeed
 <i>The main "Feed"</i>
 
+![Feed Architecture](https://user-images.githubusercontent.com/28037692/120092622-16e50780-c0c9-11eb-9aa6-aecadb6a4789.png)
+
 As an online customer, I want the app to automatically load my latest image feed so I can always enjoy the newest images of my friends
+
+
