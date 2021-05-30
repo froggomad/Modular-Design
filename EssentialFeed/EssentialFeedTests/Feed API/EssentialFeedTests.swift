@@ -128,12 +128,6 @@ class EssentialFeedTests: XCTestCase {
         return .failure(error)
     }
     
-    private func assertNoMemoryLeak(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated. Potential retain cycle.", file: file, line: line)
-        }
-    }
-    
     private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedItem, json: [String: Any]) {
         let item = FeedItem(id: id, description: description, location: location, imageURL: imageURL)
         let json: [String: Any] = [
