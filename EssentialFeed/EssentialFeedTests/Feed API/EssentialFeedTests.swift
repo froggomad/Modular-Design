@@ -30,7 +30,7 @@ class EssentialFeedTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWith: .failure(RemoteFeedLoader.Error.connectivity) ) {
+        expect(sut, toCompleteWith: failure(.connectivity) ) {
             let clientError = NSError(domain: "Test", code: 0)
             client.complete(with: clientError)
         }
@@ -47,7 +47,7 @@ class EssentialFeedTests: XCTestCase {
         failureCodes.forEach { (index, code) in
             let json = makeItemsJSON([])
             
-            expect(sut, toCompleteWith: .failure( RemoteFeedLoader.Error.invalidData) ) {
+            expect(sut, toCompleteWith: failure( .invalidData) ) {
                 client.complete(withStatusCode: code, data: json,
                                 at: index)
             }
@@ -58,7 +58,7 @@ class EssentialFeedTests: XCTestCase {
     func test_load_deliversInvalidJsonErrorOnSuccessCase() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWith: .failure(RemoteFeedLoader.Error.invalidData), when: {
+        expect(sut, toCompleteWith: failure(.invalidData), when: {
             let invalidJSON = Data("{".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
         })
@@ -122,6 +122,10 @@ class EssentialFeedTests: XCTestCase {
         assertNoMemoryLeak(client, file: file, line: line)
         assertNoMemoryLeak(sut, file: file, line: line)
         return (sut, client)
+    }
+    
+    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
+        return .failure(error)
     }
     
     private func assertNoMemoryLeak(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
