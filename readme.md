@@ -46,6 +46,46 @@ Given the customer has connectivity
 [Implementing the Remote Feed](https://github.com/essentialdevelopercom/ios-lead-essentials-feed-api-challenge/pull/237/commits/91b2e076e1a35982e39daad983dc854f38135801)
 <hr>
 
+## Model Specs
+### Feed Item
+| Property      | Type                |
+|---------------|---------------------|
+| `id`          | `UUID`              |
+| `description` | `String` (optional) |
+| `location`    | `String` (optional) |
+| `imageURL`    | `URL`               |
+
+### Payload contract
+```
+GET *url* (TBD)
+200 RESPONSE
+{
+	"items": [
+		{
+			"id": "a UUID",
+			"description": "a description",
+			"location": "a location",
+			"image": "https://a-image.url",
+		},
+		{
+			"id": "another UUID",
+			"description": "another description",
+			"image": "https://another-image.url"
+		},
+		{
+			"id": "even another UUID",
+			"location": "even another location",
+			"image": "https://even-another-image.url"
+		},
+		{
+			"id": "yet another UUID",
+			"image": "https://yet-another-image.url"
+		}
+		...
+	]
+}
+```
+
 ### Narrative #2
 
 ```
@@ -113,43 +153,3 @@ Given the customer doesn't have connectivity
 
 ## Architecture
 ![Feed Loading Feature](https://user-images.githubusercontent.com/28037692/120128945-ef00ad00-c177-11eb-95f4-02eb7fa0adbb.png)
-
-## Model Specs
-### Feed Item
-| Property      | Type                |
-|---------------|---------------------|
-| `id`          | `UUID`              |
-| `description` | `String` (optional) |
-| `location`    | `String` (optional) |
-| `imageURL`    | `URL`               |
-
-### Payload contract
-```
-GET *url* (TBD)
-200 RESPONSE
-{
-	"items": [
-		{
-			"id": "a UUID",
-			"description": "a description",
-			"location": "a location",
-			"image": "https://a-image.url",
-		},
-		{
-			"id": "another UUID",
-			"description": "another description",
-			"image": "https://another-image.url"
-		},
-		{
-			"id": "even another UUID",
-			"location": "even another location",
-			"image": "https://even-another-image.url"
-		},
-		{
-			"id": "yet another UUID",
-			"image": "https://yet-another-image.url"
-		}
-		...
-	]
-}
-```
