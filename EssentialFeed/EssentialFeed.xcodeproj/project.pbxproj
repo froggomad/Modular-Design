@@ -161,6 +161,7 @@
 			children = (
 				AA077F1626642D1000DFF744 /* Helpers */,
 				AA077F13266326AE00DFF744 /* Feed API */,
+				AAC004DA266D1B7E00C97CC7 /* Feed Cache */,
 				AA201762265CB335002FB407 /* Info.plist */,
 			);
 			path = EssentialFeedTests;
@@ -172,7 +173,6 @@
 				AA20176C265CB349002FB407 /* FeedItem.swift */,
 				AA20176E265CB815002FB407 /* FeedLoader.swift */,
 				AA077F12266326A500DFF744 /* Feed API */,
-				AAC004DA266D1B7E00C97CC7 /* Feed Cache */,
 			);
 			path = FeedLoader;
 			sourceTree = "<group>";
