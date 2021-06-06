@@ -85,6 +85,7 @@ GET *url* (TBD)
 	]
 }
 ```
+<hr>
 
 ### Narrative #2
 
