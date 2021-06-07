@@ -151,6 +151,3 @@ Given the customer doesn't have connectivity
 
 #### Saving error course (sad path):
 1. System delivers error.
-
-## Architecture
-![Feed Loading Feature](https://user-images.githubusercontent.com/28037692/120128945-ef00ad00-c177-11eb-95f4-02eb7fa0adbb.png)
