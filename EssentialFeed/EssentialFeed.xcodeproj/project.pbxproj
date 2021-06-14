@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA00C21026770D3000580344 /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00C20F26770D3000580344 /* LocalFeedLoader.swift */; };
 		AA077F152663547200DFF744 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA077F142663547200DFF744 /* URLSessionHTTPClientTests.swift */; };
 		AA077F1826642D2100DFF744 /* XCTestCase+assertNoMemoryLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA077F1726642D2100DFF744 /* XCTestCase+assertNoMemoryLeak.swift */; };
 		AA077F1A26644F4700DFF744 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA077F1926644F4700DFF744 /* URLSessionHTTPClient.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA00C20F26770D3000580344 /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		AA077F142663547200DFF744 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		AA077F1726642D2100DFF744 /* XCTestCase+assertNoMemoryLeak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+assertNoMemoryLeak.swift"; sourceTree = "<group>"; };
 		AA077F1926644F4700DFF744 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA00C20E26770D2000580344 /* Feed Cache */ = {
+			isa = PBXGroup;
+			children = (
+				AA00C20F26770D3000580344 /* LocalFeedLoader.swift */,
+			);
+			path = "Feed Cache";
+			sourceTree = "<group>";
+		};
 		AA077F12266326A500DFF744 /* Feed API */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +161,7 @@
 			children = (
 				AA201755265CB334002FB407 /* EssentialFeed.h */,
 				AA201756265CB334002FB407 /* Info.plist */,
+				AA00C20E26770D2000580344 /* Feed Cache */,
 				AA201770265CB8CD002FB407 /* FeedLoader */,
 			);
 			path = EssentialFeed;
@@ -335,6 +346,7 @@
 				AAD89AF92661F9CE0039D6BF /* FeedItemsMapper.swift in Sources */,
 				AA20176F265CB815002FB407 /* FeedLoader.swift in Sources */,
 				AA201772265CCE02002FB407 /* RemoteFeedLoader.swift in Sources */,
+				AA00C21026770D3000580344 /* LocalFeedLoader.swift in Sources */,
 				AAD89AF72661F9750039D6BF /* HTTPClient.swift in Sources */,
 				AA20176D265CB349002FB407 /* FeedItem.swift in Sources */,
 				AA077F1A26644F4700DFF744 /* URLSessionHTTPClient.swift in Sources */,
