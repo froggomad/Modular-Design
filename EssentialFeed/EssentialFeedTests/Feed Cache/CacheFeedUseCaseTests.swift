@@ -16,7 +16,7 @@ class CacheFeedUseCaseTests: XCTestCase {
     }
     
     func test_save_requestsCacheDeletion() {
-        let items = [uniqueItem]
+        let items = uniqueItems.models
         let (sut, store) = makeSut()
         
         sut.save(items) { _ in }
@@ -34,8 +34,7 @@ class CacheFeedUseCaseTests: XCTestCase {
     
     func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
         let timestamp = Date()
-        let items = [uniqueItem, uniqueItem]
-        let localItems = items.map { LocalFeedItem(id: $0.id, description: $0.description, location: $0.location, imageURL: $0.imageURL)}
+        let (items, localItems) = uniqueItems
         let (sut, store) = makeSut(currentDate: { timestamp })
         
         sut.save(items) { _ in }
@@ -80,7 +79,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResults = [LocalFeedLoader.SaveResult]()
-        sut?.save([uniqueItem]) { receivedResults.append($0) }
+        sut?.save(uniqueItems.models) { receivedResults.append($0) }
         
         sut = nil
         store.completeDeletion(with: anyError)
@@ -93,7 +92,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResults = [Error?]()
-        sut?.save([uniqueItem]) { receivedResults.append($0) }
+        sut?.save(uniqueItems.models) { receivedResults.append($0) }
         
         store.completeDeletionSuccessfully()
         sut = nil
@@ -108,6 +107,12 @@ class CacheFeedUseCaseTests: XCTestCase {
                  location: "any-location",
                  imageURL: anyURL
         )
+    }
+    
+    private var uniqueItems: (models: [FeedItem], local: [LocalFeedItem]) {
+        let models = [uniqueItem, uniqueItem]
+        let local = models.map { LocalFeedItem(id: $0.id, description: $0.description, location: $0.location, imageURL: $0.imageURL) }
+        return (models, local)
     }
     
     private var anyURL: URL {
@@ -168,7 +173,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let expectation = expectation(description: "wait for \(#function)")
         
         var receivedError: Error?
-        sut.save([uniqueItem]) { error in
+        sut.save(uniqueItems.models) { error in
             receivedError = error
             expectation.fulfill()
         }
